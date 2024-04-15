@@ -2,9 +2,11 @@ import { pool } from "../app.js";
 
 export const createNote = async (req,res) => {
     const { title,content } = req.body;
+    console.log(req.user)
+    const user = req.user
     const [result] = await pool.query(
-        `INSERT INTO notes(title,content)
-        VALUES(?,?)`,[title,content]
+        `INSERT INTO notes(title,content,userID)
+        VALUES(?,?,?)`,[title,content,user.ID]
     )
     // console.log(result.insertId,result.title,result.content);
     return res.status(200).json({success:true,message:'created note',data:{Id:result.insertId,title,content}})
